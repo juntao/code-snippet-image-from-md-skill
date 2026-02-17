@@ -8,7 +8,7 @@ name = "code2img"
 path = "src/main.rs"
 
 [dependencies]
-syntect = "5"
+syntect = { version = "5", default-features = false, features = ["default-fancy"] }
 image = "0.25"
 imageproc = "0.25"
 ab_glyph = "0.2"

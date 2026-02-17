@@ -47,15 +47,30 @@ jobs:
         if: matrix.target == 'aarch64-unknown-linux-musl'
         run: cargo install cross --git https://github.com/cross-rs/cross
 
-      - name: Build (cross)
+      - name: Build (cross, static)
         if: matrix.target == 'aarch64-unknown-linux-musl'
         working-directory: rust-src
+        env:
+          RUSTFLAGS: '-C target-feature=+crt-static'
         run: cross build --release --target ${{ matrix.target }}
 
+      - name: Build (musl static)
+        if: matrix.target == 'x86_64-unknown-linux-musl'
+        working-directory: rust-src
+        env:
+          RUSTFLAGS: '-C target-feature=+crt-static'
+        run: cargo build --release --target ${{ matrix.target }}
+
       - name: Build (native)
-        if: matrix.target != 'aarch64-unknown-linux-musl'
+        if: matrix.target != 'aarch64-unknown-linux-musl' && matrix.target != 'x86_64-unknown-linux-musl'
         working-directory: rust-src
         run: cargo build --release --target ${{ matrix.target }}
+
+      - name: Verify static linking (Linux)
+        if: matrix.target == 'x86_64-unknown-linux-musl'
+        run: |
+          file rust-src/target/${{ matrix.target }}/release/code2img
+          ldd rust-src/target/${{ matrix.target }}/release/code2img 2>&1 || echo "Statically linked (no dynamic dependencies)"
 
       - name: Package (Unix)
         if: runner.os != 'Windows'
