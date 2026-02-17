@@ -10,17 +10,6 @@ This tool ships as an [OpenClaw](https://github.com/openclaw/openclaw) skill. In
 
 > Read https://raw.githubusercontent.com/juntao/code-snippet-image-from-md-skill/main/install.md and follow the instructions.
 
-Or install manually:
-
-```bash
-SKILL_DIR="${HOME}/.openclaw/skills/code-snippet-images"
-mkdir -p "$SKILL_DIR"
-git clone --depth 1 https://github.com/juntao/code-snippet-image-from-md-skill.git /tmp/csi-repo
-cp -r /tmp/csi-repo/* "$SKILL_DIR"
-rm -rf /tmp/csi-repo
-"${SKILL_DIR}/bootstrap.sh"
-```
-
 Once installed, send your agent a markdown file and ask it to create images for the code snippets. It will extract each code block, render it as a syntax-highlighted PNG, and send the images back.
 
 ## What It Does
