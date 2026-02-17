@@ -4,6 +4,25 @@ Generate syntax-highlighted PNG images from code blocks in markdown files. Built
 
 ![Example output](https://img.shields.io/badge/rust-stable-orange) ![License: MIT](https://img.shields.io/badge/license-MIT-blue)
 
+## Quick Start
+
+This tool ships as an [OpenClaw](https://github.com/openclaw/openclaw) skill. Install it by telling your AI agent:
+
+> Read https://raw.githubusercontent.com/juntao/code-snippet-image-from-md-skill/main/install.md and follow the instructions.
+
+Or install manually:
+
+```bash
+SKILL_DIR="${HOME}/.openclaw/skills/code-snippet-images"
+mkdir -p "$SKILL_DIR"
+git clone --depth 1 https://github.com/juntao/code-snippet-image-from-md-skill.git /tmp/csi-repo
+cp -r /tmp/csi-repo/* "$SKILL_DIR"
+rm -rf /tmp/csi-repo
+"${SKILL_DIR}/bootstrap.sh"
+```
+
+Once installed, send your agent a markdown file and ask it to create images for the code snippets. It will extract each code block, render it as a syntax-highlighted PNG, and send the images back.
+
 ## What It Does
 
 Give it a markdown file with fenced code blocks:
@@ -80,27 +99,6 @@ code2img -i code.js -o output.png -l javascript --font-size 24 --theme "Solarize
 - `Solarized (dark)`
 - `Solarized (light)`
 - `base16-ocean.light`
-
-## AI Agent Skill
-
-This tool ships as an [OpenClaw](https://github.com/openclaw/openclaw) skill. AI agents can use it to generate code snippet images from markdown files on demand.
-
-### Install as a Skill
-
-Tell your agent:
-
-> Read https://raw.githubusercontent.com/juntao/code-snippet-image-from-md-skill/main/install.md and follow the instructions.
-
-Or install manually:
-
-```bash
-SKILL_DIR="${HOME}/.openclaw/skills/code-snippet-images"
-mkdir -p "$SKILL_DIR"
-git clone --depth 1 https://github.com/juntao/code-snippet-image-from-md-skill.git /tmp/csi-repo
-cp -r /tmp/csi-repo/* "$SKILL_DIR"
-rm -rf /tmp/csi-repo
-"${SKILL_DIR}/bootstrap.sh"
-```
 
 ## License
 
