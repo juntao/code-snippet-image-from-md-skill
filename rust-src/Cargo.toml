@@ -1,0 +1,15 @@
+[package]
+name = "code2img"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "code2img"
+path = "src/main.rs"
+
+[dependencies]
+syntect = "5"
+image = "0.25"
+imageproc = "0.25"
+ab_glyph = "0.2"
+clap = { version = "4", features = ["derive"] }

@@ -1,0 +1,3 @@
+# Compiled binaries
+scripts/code2img
+rust-src/target/
