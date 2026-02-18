@@ -52,7 +52,7 @@ If automatic download fails, manually download the binary:
 If no pre-built binary is available for your platform:
 
 ```bash
-cd ~/.openclaw/skills/code-snippet-images/rust-src
+cd ~/.openclaw/skills/code-snippet-images/code2img
 cargo build --release
 cp target/release/code2img ../scripts/code2img
 ```

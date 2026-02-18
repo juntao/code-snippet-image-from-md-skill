@@ -14,8 +14,8 @@ Extract code blocks and tables from markdown and render each as a PNG image.
 
 To rebuild from source:
 ```bash
-cd {baseDir}/rust-src && cargo build --release
-cp {baseDir}/rust-src/target/release/code2img {baseDir}/scripts/code2img
+cd {baseDir}/code2img && cargo build --release
+cp {baseDir}/code2img/target/release/code2img {baseDir}/scripts/code2img
 ```
 
 ## Workflow

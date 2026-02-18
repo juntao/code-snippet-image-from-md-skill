@@ -50,65 +50,65 @@ jobs:
       # Build code2img
       - name: Build code2img (cross, static)
         if: matrix.target == 'aarch64-unknown-linux-musl'
-        working-directory: rust-src
+        working-directory: code2img
         env:
           RUSTFLAGS: '-C target-feature=+crt-static'
         run: cross build --release --target ${{ matrix.target }}
 
       - name: Build code2img (musl static)
         if: matrix.target == 'x86_64-unknown-linux-musl'
-        working-directory: rust-src
+        working-directory: code2img
         env:
           RUSTFLAGS: '-C target-feature=+crt-static'
         run: cargo build --release --target ${{ matrix.target }}
 
       - name: Build code2img (native)
         if: matrix.target != 'aarch64-unknown-linux-musl' && matrix.target != 'x86_64-unknown-linux-musl'
-        working-directory: rust-src
+        working-directory: code2img
         run: cargo build --release --target ${{ matrix.target }}
 
       # Build table2img
       - name: Build table2img (cross, static)
         if: matrix.target == 'aarch64-unknown-linux-musl'
-        working-directory: rust-src-table
+        working-directory: table2img
         env:
           RUSTFLAGS: '-C target-feature=+crt-static'
         run: cross build --release --target ${{ matrix.target }}
 
       - name: Build table2img (musl static)
         if: matrix.target == 'x86_64-unknown-linux-musl'
-        working-directory: rust-src-table
+        working-directory: table2img
         env:
           RUSTFLAGS: '-C target-feature=+crt-static'
         run: cargo build --release --target ${{ matrix.target }}
 
       - name: Build table2img (native)
         if: matrix.target != 'aarch64-unknown-linux-musl' && matrix.target != 'x86_64-unknown-linux-musl'
-        working-directory: rust-src-table
+        working-directory: table2img
         run: cargo build --release --target ${{ matrix.target }}
 
       - name: Verify static linking (Linux)
         if: matrix.target == 'x86_64-unknown-linux-musl'
         run: |
-          file rust-src/target/${{ matrix.target }}/release/code2img
-          ldd rust-src/target/${{ matrix.target }}/release/code2img 2>&1 || echo "Statically linked (no dynamic dependencies)"
-          file rust-src-table/target/${{ matrix.target }}/release/table2img
-          ldd rust-src-table/target/${{ matrix.target }}/release/table2img 2>&1 || echo "Statically linked (no dynamic dependencies)"
+          file code2img/target/${{ matrix.target }}/release/code2img
+          ldd code2img/target/${{ matrix.target }}/release/code2img 2>&1 || echo "Statically linked (no dynamic dependencies)"
+          file table2img/target/${{ matrix.target }}/release/table2img
+          ldd table2img/target/${{ matrix.target }}/release/table2img 2>&1 || echo "Statically linked (no dynamic dependencies)"
 
       - name: Package (Unix)
         if: runner.os != 'Windows'
         run: |
           mkdir -p staging
-          cp rust-src/target/${{ matrix.target }}/release/code2img staging/
-          cp rust-src-table/target/${{ matrix.target }}/release/table2img staging/
+          cp code2img/target/${{ matrix.target }}/release/code2img staging/
+          cp table2img/target/${{ matrix.target }}/release/table2img staging/
           cd staging && zip ../${{ matrix.artifact }}.zip code2img table2img
 
       - name: Package (Windows)
         if: runner.os == 'Windows'
         run: |
           mkdir staging
-          copy rust-src\target\${{ matrix.target }}\release\code2img.exe staging\
-          copy rust-src-table\target\${{ matrix.target }}\release\table2img.exe staging\
+          copy code2img\target\${{ matrix.target }}\release\code2img.exe staging\
+          copy table2img\target\${{ matrix.target }}\release\table2img.exe staging\
           cd staging && Compress-Archive -Path code2img.exe,table2img.exe -DestinationPath ..\${{ matrix.artifact }}.zip
 
       - name: Upload artifact

@@ -51,7 +51,7 @@ Download from [Releases](https://github.com/juntao/code-snippet-image-from-md-sk
 ### Build from Source
 
 ```bash
-cd rust-src
+cd code2img
 cargo build --release
 # Binary at: target/release/code2img
 ```
