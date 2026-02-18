@@ -9,14 +9,8 @@ Extract code blocks and tables from markdown and render each as a PNG image.
 
 ## Binaries
 
-`{baseDir}/scripts/code2img` — Renders code to a syntax-highlighted PNG.
-`{baseDir}/scripts/table2img` — Renders a markdown table to a styled PNG.
-
-To rebuild from source:
-```bash
-cd {baseDir}/code2img && cargo build --release
-cp {baseDir}/code2img/target/release/code2img {baseDir}/scripts/code2img
-```
+* `{baseDir}/scripts/code2img` — Renders code to a syntax-highlighted PNG.
+* `{baseDir}/scripts/table2img` — Renders a markdown table to a styled PNG.
 
 ## Workflow
 
