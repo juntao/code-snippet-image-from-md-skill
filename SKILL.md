@@ -1,6 +1,6 @@
 ---
 name: code-snippet-images
-description: Generate syntax-highlighted PNG images from code blocks in a markdown document. Triggered when user says they need images for code snippets in a markdown file. The markdown can be provided inline in the message body or as a Telegram file attachment. Generated images are sent back as Telegram messages.
+description: Generate syntax-highlighted PNG images from code blocks in a markdown document. Triggered when user says they need images for code snippets in a markdown file. The markdown can be provided inline in the message body or as a Telegram file attachment. Generated images are sent back as Telegram messages. Supports dark (default) and light themes — user can request "light" or "dark" style.
 ---
 
 # Code Snippet Images
@@ -39,6 +39,8 @@ Options:
 - `-l <lang>` — Language for syntax highlighting (rust, python, js, etc.). Default: `plain`
 - `--font-size <px>` — Font size. Default: `28`
 - `--theme <name>` — Syntect theme. Default: `base16-ocean.dark`
+
+**Style selection:** If the user requests "light" style/theme, use `--theme InspiredGitHub`. Default is dark (`base16-ocean.dark`). The user may also say "light mode", "white background", "light theme", etc.
 
 ### 4. Send Images via Telegram
 
