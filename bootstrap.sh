@@ -1,6 +1,6 @@
 #!/bin/bash
 # Bootstrap script for code-snippet-images skill
-# Downloads and installs platform-specific code2img binary
+# Downloads and installs platform-specific code2img and table2img binaries
 
 set -e
 
@@ -62,7 +62,7 @@ download_binary() {
     local url="$2"
     local temp_dir
 
-    echo "Downloading code2img for ${platform}..." >&2
+    echo "Downloading code2img and table2img for ${platform}..." >&2
 
     mkdir -p "${SCRIPTS_DIR}"
 
@@ -87,11 +87,12 @@ download_binary() {
 
     if [[ "$(uname -s)" != MINGW* ]] && [[ "$(uname -s)" != MSYS* ]] && [[ "$(uname -s)" != CYGWIN* ]]; then
         chmod +x "${SCRIPTS_DIR}/code2img"
+        chmod +x "${SCRIPTS_DIR}/table2img" 2>/dev/null || true
     fi
 
     rm -rf "$temp_dir"
 
-    echo "code2img installed to ${SCRIPTS_DIR}" >&2
+    echo "code2img and table2img installed to ${SCRIPTS_DIR}" >&2
 }
 
 main() {
