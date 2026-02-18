@@ -57,22 +57,6 @@ If automatic download fails, manually download the binaries:
    chmod +x ~/.openclaw/skills/images-from-md/scripts/table2img
    ```
 
-## Building from Source
-
-If no pre-built binary is available for your platform:
-
-```bash
-# Build code2img
-cd ~/.openclaw/skills/images-from-md/code2img
-cargo build --release
-cp target/release/code2img ../scripts/code2img
-
-# Build table2img
-cd ~/.openclaw/skills/images-from-md/table2img
-cargo build --release
-cp target/release/table2img ../scripts/table2img
-```
-
 ## Troubleshooting
 
 ### Download Failed
