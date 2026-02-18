@@ -19,11 +19,11 @@ Extract code blocks and tables from markdown and render each as a PNG image.
 - **Inline**: Extract markdown text from the message body (everything after the request)
 - **File attachment**: Read the file from the Telegram media path
 
-### 2. Parse Code Blocks
+### 2. Parse Code Blocks and Tables
 
 Find all fenced code blocks (` ```lang ... ``` `). Extract each block's language, code content, and sequential index.
 
-### 3. Render Images
+### 3a. Render Code Images
 
 For each code block, write code to a temp file and render:
 ```bash
