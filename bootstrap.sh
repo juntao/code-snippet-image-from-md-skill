@@ -4,7 +4,7 @@
 
 set -e
 
-REPO="juntao/code-snippet-image-from-md-skill"
+REPO="juntao/images-from-md-skill"
 SKILL_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SCRIPTS_DIR="${SKILL_DIR}/scripts"
 
