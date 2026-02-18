@@ -1,15 +1,16 @@
 ---
 name: code-snippet-images
-description: Generate syntax-highlighted PNG images from code blocks in a markdown document. Triggered when user says they need images for code snippets in a markdown file. The markdown can be provided inline in the message body or as a Telegram file attachment. Generated images are sent back as Telegram messages. Supports dark (default) and light themes — user can request "light" or "dark" style.
+description: Generate syntax-highlighted PNG images from code blocks AND/OR tables in a markdown document. Triggered when user says they need images for code snippets or tables in a markdown file. The markdown can be provided inline in the message body or as a Telegram file attachment. Generated images are sent back as Telegram messages. Supports dark (default) and light themes — user can request "light" or "dark" style.
 ---
 
 # Code Snippet Images
 
-Extract code blocks from markdown and render each as a syntax-highlighted PNG image.
+Extract code blocks and tables from markdown and render each as a PNG image.
 
-## Binary
+## Binaries
 
 `{baseDir}/scripts/code2img` — Renders code to a syntax-highlighted PNG.
+`{baseDir}/scripts/table2img` — Renders a markdown table to a styled PNG.
 
 To rebuild from source:
 ```bash
@@ -41,6 +42,19 @@ Options:
 - `--theme <name>` — Syntect theme. Default: `base16-ocean.dark`
 
 **Style selection:** If the user requests "light" style/theme, use `--theme InspiredGitHub`. Default is dark (`base16-ocean.dark`). The user may also say "light mode", "white background", "light theme", etc.
+
+### 3b. Render Table Images
+
+For each markdown table, write the table (including header, separator, and data rows) to a temp file and render:
+```bash
+{baseDir}/scripts/table2img -i /tmp/table_N.md -o /tmp/table_N.png
+```
+
+Options:
+- `--font-size <px>` — Font size. Default: `24`
+- `--theme <dark|light>` — Color theme. Default: `dark`
+
+**Style selection:** If the user requests "light" style/theme, use `--theme light`. Default is `dark`.
 
 ### 4. Send Images via Telegram
 
