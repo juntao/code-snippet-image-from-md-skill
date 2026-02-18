@@ -53,13 +53,23 @@ Options:
 ### 4. Send Images via Telegram
 
 Copy rendered PNGs to the allowed media directory, then send via the `message` tool:
+
+**Code snippets:**
 ```bash
 cp /tmp/snippet_N.png ~/.openclaw/media/inbound/snippet_N.png
 ```
-
-Then send:
+Send with:
 - `action: send`
 - `filePath: ~/.openclaw/media/inbound/snippet_N.png`
 - `caption: "Code block N (lang)"`
 
-Send images in order, one per code block. If no code blocks found, tell the user.
+**Tables:**
+```bash
+cp /tmp/table_N.png ~/.openclaw/media/inbound/table_N.png
+```
+Send with:
+- `action: send`
+- `filePath: ~/.openclaw/media/inbound/table_N.png`
+- `caption: "Table N"`
+
+Send all images in order (code blocks first, then tables). If no code blocks or tables found, tell the user.
