@@ -1,4 +1,4 @@
-# Code Snippet Images from Markdown
+# Images from Markdown
 
 Generate syntax-highlighted PNG images from code blocks in markdown files. Built in Rust, designed for AI agents.
 
@@ -8,7 +8,7 @@ Generate syntax-highlighted PNG images from code blocks in markdown files. Built
 
 This tool ships as an [OpenClaw](https://github.com/openclaw/openclaw) skill. Install it by telling your AI agent:
 
-> Read https://raw.githubusercontent.com/juntao/code-snippet-image-from-md-skill/main/install.md and follow the instructions.
+> Read https://raw.githubusercontent.com/juntao/images-from-md-skill/main/install.md and follow the instructions.
 
 Once installed, send your agent a markdown file and ask it to create images for the code snippets. It will extract each code block, render it as a syntax-highlighted PNG, and send the images back.
 
@@ -38,7 +38,7 @@ Get back a beautiful syntax-highlighted PNG image — ready to embed in blog pos
 
 ### Pre-built Binaries
 
-Download from [Releases](https://github.com/juntao/code-snippet-image-from-md-skill/releases/latest):
+Download from [Releases](https://github.com/juntao/images-from-md-skill/releases/latest):
 
 | Platform | File |
 |----------|------|
