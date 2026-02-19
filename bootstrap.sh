@@ -1,6 +1,6 @@
 #!/bin/bash
 # Bootstrap script for code-snippet-images skill
-# Downloads and installs platform-specific code2img and table2img binaries
+# Downloads and installs platform-specific code2img, table2img, and md2img binaries
 
 set -e
 
@@ -62,7 +62,7 @@ download_binary() {
     local url="$2"
     local temp_dir
 
-    echo "Downloading code2img and table2img for ${platform}..." >&2
+    echo "Downloading code2img, table2img, and md2img for ${platform}..." >&2
 
     mkdir -p "${SCRIPTS_DIR}"
 
@@ -76,7 +76,7 @@ download_binary() {
         wget -q -O "$zip_file" "$url"
     fi
 
-    echo "Extracting binary..." >&2
+    echo "Extracting binaries..." >&2
     if command -v unzip &>/dev/null; then
         unzip -q -o "$zip_file" -d "${SCRIPTS_DIR}"
     else
@@ -88,11 +88,61 @@ download_binary() {
     if [[ "$(uname -s)" != MINGW* ]] && [[ "$(uname -s)" != MSYS* ]] && [[ "$(uname -s)" != CYGWIN* ]]; then
         chmod +x "${SCRIPTS_DIR}/code2img"
         chmod +x "${SCRIPTS_DIR}/table2img" 2>/dev/null || true
+        chmod +x "${SCRIPTS_DIR}/md2img" 2>/dev/null || true
     fi
 
     rm -rf "$temp_dir"
 
-    echo "code2img and table2img installed to ${SCRIPTS_DIR}" >&2
+    echo "Binaries installed to ${SCRIPTS_DIR}" >&2
+}
+
+check_chromium() {
+    echo "" >&2
+    echo "=== md2img: Chromium dependency check ===" >&2
+
+    # Check Playwright installs
+    local found=""
+    for dir in \
+        "$HOME/Library/Caches/ms-playwright" \
+        "$HOME/.cache/ms-playwright"; do
+        if [ -d "$dir" ]; then
+            found="$dir"
+            break
+        fi
+    done
+
+    # Check system Chrome
+    if [ -z "$found" ]; then
+        for bin in \
+            "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
+            "/usr/bin/google-chrome" \
+            "/usr/bin/google-chrome-stable" \
+            "/usr/bin/chromium" \
+            "/usr/bin/chromium-browser" \
+            "/snap/bin/chromium"; do
+            if [ -x "$bin" ]; then
+                found="$bin"
+                break
+            fi
+        done
+    fi
+
+    if [ -n "$found" ]; then
+        echo "✅ Chromium found: $found" >&2
+    else
+        echo "⚠️  md2img requires a Chromium-based browser for rendering." >&2
+        echo "   Install one of the following:" >&2
+        echo "" >&2
+        echo "   # Option 1: Playwright (recommended — lightweight headless shell)" >&2
+        echo "   pip install playwright && python -m playwright install chromium" >&2
+        echo "   # or: npx playwright install chromium" >&2
+        echo "" >&2
+        echo "   # Option 2: Google Chrome" >&2
+        echo "   https://google.com/chrome" >&2
+        echo "" >&2
+        echo "   md2img will not work until a browser is available." >&2
+        echo "   code2img and table2img do NOT require a browser." >&2
+    fi
 }
 
 main() {
@@ -104,6 +154,8 @@ main() {
     download_url=$(get_download_url "$platform")
 
     download_binary "$platform" "$download_url"
+
+    check_chromium
 
     echo "" >&2
     echo "Installed:" >&2

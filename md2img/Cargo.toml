@@ -1,0 +1,16 @@
+[package]
+name = "md2img"
+version = "0.1.0"
+edition = "2021"
+description = "Render markdown to PNG via headless Chromium"
+
+[[bin]]
+name = "md2img"
+path = "src/main.rs"
+
+[dependencies]
+headless_chrome = "1"
+clap = { version = "4", features = ["derive"] }
+anyhow = "1"
+serde_json = "1"
+pulldown-cmark = { version = "0.12", default-features = false, features = ["html"] }

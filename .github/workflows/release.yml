@@ -87,6 +87,22 @@ jobs:
         working-directory: table2img
         run: cargo build --release --target ${{ matrix.target }}
 
+      # Build md2img
+      - name: Build md2img (cross)
+        if: matrix.target == 'aarch64-unknown-linux-musl'
+        working-directory: md2img
+        run: cross build --release --target ${{ matrix.target }}
+
+      - name: Build md2img (musl)
+        if: matrix.target == 'x86_64-unknown-linux-musl'
+        working-directory: md2img
+        run: cargo build --release --target ${{ matrix.target }}
+
+      - name: Build md2img (native)
+        if: matrix.target != 'aarch64-unknown-linux-musl' && matrix.target != 'x86_64-unknown-linux-musl'
+        working-directory: md2img
+        run: cargo build --release --target ${{ matrix.target }}
+
       - name: Verify static linking (Linux)
         if: matrix.target == 'x86_64-unknown-linux-musl'
         run: |
@@ -94,6 +110,8 @@ jobs:
           ldd code2img/target/${{ matrix.target }}/release/code2img 2>&1 || echo "Statically linked (no dynamic dependencies)"
           file table2img/target/${{ matrix.target }}/release/table2img
           ldd table2img/target/${{ matrix.target }}/release/table2img 2>&1 || echo "Statically linked (no dynamic dependencies)"
+          file md2img/target/${{ matrix.target }}/release/md2img
+          ldd md2img/target/${{ matrix.target }}/release/md2img 2>&1 || echo "Statically linked (no dynamic dependencies)"
 
       - name: Package (Unix)
         if: runner.os != 'Windows'
@@ -101,7 +119,8 @@ jobs:
           mkdir -p staging
           cp code2img/target/${{ matrix.target }}/release/code2img staging/
           cp table2img/target/${{ matrix.target }}/release/table2img staging/
-          cd staging && zip ../${{ matrix.artifact }}.zip code2img table2img
+          cp md2img/target/${{ matrix.target }}/release/md2img staging/
+          cd staging && zip ../${{ matrix.artifact }}.zip code2img table2img md2img
 
       - name: Package (Windows)
         if: runner.os == 'Windows'
@@ -109,7 +128,8 @@ jobs:
           mkdir staging
           copy code2img\target\${{ matrix.target }}\release\code2img.exe staging\
           copy table2img\target\${{ matrix.target }}\release\table2img.exe staging\
-          cd staging && Compress-Archive -Path code2img.exe,table2img.exe -DestinationPath ..\${{ matrix.artifact }}.zip
+          copy md2img\target\${{ matrix.target }}\release\md2img.exe staging\
+          cd staging && Compress-Archive -Path code2img.exe,table2img.exe,md2img.exe -DestinationPath ..\${{ matrix.artifact }}.zip
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
