@@ -1,16 +1,29 @@
 ---
 name: code-snippet-images
-description: Generate syntax-highlighted PNG images from code blocks AND/OR tables in a markdown document. Triggered when user says they need images for code snippets or tables in a markdown file. The markdown can be provided inline in the message body or as a Telegram file attachment. Generated images are sent back as Telegram messages. Supports dark (default) and light themes — user can request "light" or "dark" style.
+description: Generate syntax-highlighted PNG images from code blocks, tables, and/or full markdown sections in a document. Triggered when user says they need images for code snippets, tables, or markdown content. The markdown can be provided inline in the message body or as a Telegram file attachment. Generated images are sent back as Telegram messages. Supports dark (default) and light themes — user can request "light" or "dark" style.
 ---
 
 # Code Snippet Images
 
-Extract code blocks and tables from markdown and render each as a PNG image.
+Extract code blocks, tables, and markdown sections from documents and render each as a PNG image.
 
 ## Binaries
 
 * `{baseDir}/scripts/code2img` — Renders code to a syntax-highlighted PNG.
 * `{baseDir}/scripts/table2img` — Renders a markdown table to a styled PNG.
+* `{baseDir}/scripts/md2img` — Renders any markdown (or HTML) to a PNG via headless Chromium. Supports emoji, Unicode, complex formatting, and everything a browser can render.
+
+## When to Use Which Tool
+
+- **`code2img`** — Best for individual code blocks. Produces pixel-perfect syntax highlighting with embedded JetBrains Mono font. No browser needed.
+- **`table2img`** — Best for simple markdown tables without emoji or special Unicode. No browser needed.
+- **`md2img`** — Use for:
+  - Tables containing **emoji** (✅, ❌, ⚠️, etc.) — `table2img` cannot render emoji
+  - **Mixed content** (headings + tables + code + blockquotes in one image)
+  - Any markdown section the user wants rendered as a single image
+  - When the user is **unsatisfied with existing output** from `code2img` or `table2img`
+  - **Full markdown documents** or sections
+  - Requires a Chromium-based browser (Playwright or Chrome)
 
 ## Workflow
 
@@ -50,6 +63,29 @@ Options:
 
 **Style selection:** If the user requests "light" style/theme, use `--theme light`. Default is `dark`.
 
+**Note:** If the table contains emoji or special Unicode characters, use `md2img` instead — `table2img` uses an embedded monospace font that lacks emoji glyphs.
+
+### 3c. Render Markdown Sections (md2img)
+
+For full markdown sections, mixed content, or when emoji rendering is needed:
+```bash
+{baseDir}/scripts/md2img -i /tmp/section_N.md -o /tmp/section_N.png
+```
+
+Options:
+- `--width <px>` — Viewport width in CSS pixels. Default: `900`
+- `--scale <factor>` — Device scale factor (2 = Retina). Default: `2`
+- `--theme <dark|light>` — Color theme. Default: `dark`
+- `--html` — Treat input as raw HTML (skip markdown conversion)
+- `--chrome <path>` — Path to Chrome/Chromium binary (auto-detected if omitted)
+
+**Style selection:** `--theme light` for light mode, `--theme dark` (default) for dark mode.
+
+**Input from stdin:**
+```bash
+echo "# Hello 🦀" | {baseDir}/scripts/md2img -i - -o /tmp/output.png
+```
+
 ### 4. Send Images via Telegram
 
 Copy rendered PNGs to the allowed media directory, then send via the `message` tool:
@@ -72,4 +108,13 @@ Send with:
 - `filePath: ~/.openclaw/media/inbound/table_N.png`
 - `caption: "Table N"`
 
-Send all images in order (code blocks first, then tables). If no code blocks or tables found, tell the user.
+**Markdown sections:**
+```bash
+cp /tmp/section_N.png ~/.openclaw/media/inbound/section_N.png
+```
+Send with:
+- `action: send`
+- `filePath: ~/.openclaw/media/inbound/section_N.png`
+- `caption: "Section N"`
+
+Send all images in order (code blocks first, then tables, then sections). If no code blocks, tables, or sections found, tell the user.
